@@ -21,18 +21,27 @@ import android.widget.RelativeLayout;
 public class SizeSwitchView extends RelativeLayout implements View.OnClickListener{
     private final String TAG = "SizeSwitchView";
     private Context mContext;
+    //是否为小形态
     private boolean isSmallMode = true;
-    private BigDirectionKey mBigDirectionKey;
 
+    private BigDirectionKey mBigDirectionKey;
     private ImageView mSmallKey;
+    //大小形态宽高
     private int mSmallWidth = 60,mSmallHeight = 60;
     private int mBigWidth = 300,mBigHeight = 300;
 
     private float lastX = 0, lastY = 0;
-    private boolean isDraggable = true, canDrag = true;
 
+    //当前状态能否被拖动
+    private boolean isDraggable = true;
+
+    //能否被拖动
+    private boolean canDrag = true;
+
+    //最小拖动量
     private float clickOffset = 3;
 
+    //放大缩小动画
     private Animation smallShrinkAnimation,bigLargenAnimation,bigShrinkAnimation,smallLargenAnimation;
 
     public SizeSwitchView(Context context) {
@@ -59,6 +68,7 @@ public class SizeSwitchView extends RelativeLayout implements View.OnClickListen
 
 //        setKeysVisibility();
 
+        //要等到宽高初始化完，才能获取宽高，进行
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -193,19 +203,21 @@ public class SizeSwitchView extends RelativeLayout implements View.OnClickListen
             LayoutParams smallParams = (LayoutParams) getLayoutParams();
             smallParams.width = mSmallWidth;
             smallParams.height = mSmallHeight;
-            smallParams.leftMargin += (getWidth() - mSmallWidth)/2;
-            smallParams.bottomMargin += (getHeight() - mSmallHeight)/2;
-            smallParams.topMargin -= (getHeight() - mSmallHeight)/2;
-            smallParams.rightMargin -= (getWidth() - mSmallWidth)/2;
+//            smallParams.leftMargin += (getWidth() - mSmallWidth)/2;
+//            smallParams.bottomMargin += (getHeight() - mSmallHeight)/2;
+//            Log.d(TAG, "setMode: smallParams" + smallParams.bottomMargin);
+//            smallParams.topMargin += (getHeight() - mSmallHeight)/2;
+//            smallParams.rightMargin += (getWidth() - mSmallWidth)/2;
             setLayoutParams(smallParams);
         }else {
             LayoutParams bigParams = (LayoutParams) getLayoutParams();
             bigParams.width = mBigWidth;
             bigParams.height = mBigHeight;
-            bigParams.leftMargin -= (mBigWidth - mSmallWidth)/2;
-            bigParams.bottomMargin -= (mBigHeight - mSmallHeight)/2;
-            bigParams.topMargin += (mBigHeight - mSmallHeight)/2;
-            bigParams.rightMargin += (mBigHeight - mSmallHeight)/2;
+//            bigParams.leftMargin -= (mBigWidth - mSmallWidth)/2;
+//            bigParams.bottomMargin -= (mBigHeight - mSmallHeight)/2;
+//            Log.d(TAG, "setMode: bigParams" + bigParams.bottomMargin);
+//            bigParams.topMargin -= (mBigHeight - mSmallHeight)/2;
+//            bigParams.rightMargin -= (mBigHeight - mSmallHeight)/2;
             setLayoutParams(bigParams);
 //            requestLayout();
         }
@@ -308,6 +320,7 @@ public class SizeSwitchView extends RelativeLayout implements View.OnClickListen
                 params.rightMargin = params.rightMargin - offX;
                 params.topMargin += offY;
                 params.bottomMargin -= offY;
+//                layout(getLeft() + offX,getTop() + offY,getRight() - offX,getBottom() - offY);
                 setLayoutParams(params);
 
                 return true;
