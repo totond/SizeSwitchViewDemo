@@ -1,6 +1,7 @@
 package yanzhikai.sizeswitchview;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,10 +36,16 @@ public class BigDirectionKey extends RelativeLayout {
         initKeys();
     }
 
+    @Override
+    public void onDrawForeground(Canvas canvas) {
+        super.onDrawForeground(canvas);
+    }
+
     private void init(Context context){
         mContext = context;
     }
 
+    //初始化
     private void initKeys(){
         okKey = new ImageView(mContext);
         upKey = new ImageView(mContext);
@@ -78,6 +85,7 @@ public class BigDirectionKey extends RelativeLayout {
 
         setBackgroundResource(R.drawable.button_shape);
 
+        //设置点击监听器
         for (int i = 0; i < getChildCount(); i++){
             getChildAt(i).setOnClickListener(new MyOnClickListener(i));
         }
@@ -168,6 +176,7 @@ public class BigDirectionKey extends RelativeLayout {
     }
 
 
+    //重写一个带索引的OnClickListener，索引用于标识5个子View
     private class MyOnClickListener implements OnClickListener {
         private int index;
 
@@ -183,6 +192,7 @@ public class BigDirectionKey extends RelativeLayout {
         }
     }
 
+    //暴露给外部的点击接口
     public interface OnKeyClickListener{
         public void onKeyClick(int index);
     }
